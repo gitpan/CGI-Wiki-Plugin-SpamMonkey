@@ -13,10 +13,10 @@ my $object = CGI::Wiki::Plugin::SpamMonkey->new ();
 isa_ok ($object, 'CGI::Wiki::Plugin::SpamMonkey');
 
 #03
-ok(!$object->is_spam(''.undef), "The empty string is not spam");
+ok(!$object->is_spam(content => ''), "The empty string is not spam");
 
 #04
-ok(!$object->is_spam('Lovely pub in the City of London',undef), "Negative test");
+ok(!$object->is_spam(content => 'Lovely pub in the City of London'), "Negative test");
 
 my $spamedit;
 
@@ -31,7 +31,7 @@ my $spamedit;
 TODO: {
     local $TODO = "SpamAssassin rules not currently working";
 #06
-ok($object->is_spam($spamedit,undef), "Spam content");
+ok($object->is_spam(content => $spamedit), "Spam content");
 
 }
 

@@ -1,7 +1,7 @@
 package CGI::Wiki::Plugin::SpamMonkey;
 use strict;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use base 'CGI::Wiki::Plugin';
 use SpamMonkey;
@@ -17,9 +17,10 @@ sub new {
 }
 
 sub is_spam {
-    my ($self,$content,$meta) = @_;
+    my ($self,%args) = @_;
 
-    $content .= Dumper($meta);
+    my $content = $args{content} || '';
+    $content .= Dumper($args{metadata}) if exists $args{metadata};
 
     my $result = $self->{monkey}->test($content);
     return $result->is_spam;
