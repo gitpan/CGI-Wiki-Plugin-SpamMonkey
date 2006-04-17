@@ -1,7 +1,7 @@
 package CGI::Wiki::Plugin::SpamMonkey;
 use strict;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use base 'CGI::Wiki::Plugin';
 use SpamMonkey;
@@ -9,6 +9,12 @@ use Data::Dumper;
 
 sub new {
     my ($class) = @_;
+    my $newhome;
+    if (!exists $ENV{HOME}) {
+        $newhome = $ENV{HOMEDRIVE} . $ENV{HOMEPATH}
+            if exists $ENV{HOMEDRIVE}; # Win XP/2000
+    }
+    local $ENV{HOME} = $newhome if $newhome;
     my $monkey = SpamMonkey->new( rule_dir => "/etc/mail/spamassassin/");
     $monkey->ready;
     my $self = bless ({ monkey => $monkey}, $class);
